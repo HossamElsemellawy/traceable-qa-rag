@@ -10,10 +10,10 @@ Each program has its own folder and README with installation, commands, inputs a
 
 | Stage | Program | What it does | Paper |
 |---|---|---|---|
-| Offline | [**indexer**](indexer/) | Builds the QA knowledge base: context-aware chunking, atomic QA generation, coverage pass, merging, SQLite + Chroma | Section 3.1, Appendix A.1–A.3 |
-| Offline | [**indexer/hotpot_index.py**](indexer/#building-the-hotpotqa-knowledge-bases-paper-experiments) | Samples the 500 HotpotQA questions and indexes their paragraphs (KB-GLM, KB-Qwen) | Sections 4.1–4.2 |
-| Online | [**planner**](planner/) | Direct-first gate and ReAct loop, cited answers, planning trace database; runs the HotpotQA experiments | Section 3.2, Appendix A.4–A.5, C |
-| Evaluation | [**answer-evaluation**](answer-evaluation/) | Short-answer extraction, LLM judge, EM/F1, supporting-fact recall | Section 3.3, 4.5, Appendix A.6–A.7 |
+| Offline | [**QARAG_Indexer**](QARAG_Indexer/) | Builds the QA knowledge base: context-aware chunking, atomic QA generation, coverage pass, merging, SQLite + Chroma | Section 3.1, Appendix A.1–A.3 |
+| Offline | [**QARAG_Indexer/hotpot_index.py**](QARAG_Indexer/#building-the-hotpotqa-knowledge-bases-paper-experiments) | Samples the 500 HotpotQA questions and indexes their paragraphs (KB-GLM, KB-Qwen) | Sections 4.1–4.2 |
+| Online | [**QARAG_Planner**](QARAG_Planner/) | Direct-first gate and ReAct loop, cited answers, planning trace database; runs the HotpotQA experiments | Section 3.2, Appendix A.4–A.5, C |
+| Evaluation | [**QARAG_Answer_Eval**](QARAG_Answer_Eval/) | Short-answer extraction, LLM judge, EM/F1, supporting-fact recall | Section 3.3, 4.5, Appendix A.6–A.7 |
 | Analysis | *Analysis scripts* (coming) | Judge panel majority, agreement, ensemble, tables and figures | Section 5 |
 
 ## Requirements
