@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "Traceable and Auditable RAG: code"
+authors:
+  - family-names: Elsemellawy
+    given-names: Hossam
+    affiliation: "Arab Academy for Science, Technology and Maritime Transport"
+  - family-names: Elbendary
+    given-names: Nashwa
+    affiliation: "Arab Academy for Science, Technology and Maritime Transport"
+  - family-names: Abdelmoez
+    given-names: Walid Mohamed Rabie
+    affiliation: "Arab Academy for Science, Technology and Maritime Transport"
+  - family-names: Attia
+    given-names: Mohamed
+    affiliation: "Future University in Egypt"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Traceable and Auditable RAG: Generating QA Knowledge Base for Answering Multi-Hop Questions"
+  authors:
+    - family-names: Elsemellawy
+      given-names: Hossam
+    - family-names: Elbendary
+      given-names: Nashwa
+    - family-names: Abdelmoez
+      given-names: Walid Mohamed Rabie
+    - family-names: Attia
+      given-names: Mohamed
+  journal: "Data Mining and Knowledge Discovery"
+  notes: "Submitted"
