@@ -1,0 +1,13 @@
+# Indexer requirements. Install with:
+#   pip install -r requirements.txt
+litellm>=1.40          # one API for chat models (used with OpenRouter)
+openai>=1.40           # OpenRouter's embeddings endpoint is OpenAI-compatible
+chromadb>=0.5          # vector database
+httpx>=0.27            # downloading web pages and online files
+beautifulsoup4>=4.12   # extracting article text from HTML pages
+pypdf>=4.0             # extracting text from PDF files
+python-docx>=1.1       # extracting text from Word (.docx) files
+pydantic>=2.5          # validating the generator's JSON output
+python-dotenv>=1.0     # reading the .env file
+typer>=0.12            # command-line interface
+datasets>=2.14         # hotpot_index.py: downloading HotpotQA from Hugging Face

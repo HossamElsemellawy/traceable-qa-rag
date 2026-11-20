@@ -1,0 +1,5 @@
+# Stage 0 indexer requirements. Install with:
+#   pip install -r requirements.txt
+litellm>=1.40          # one API for chat models (we use it with OpenRouter)
+python-dotenv>=1.0     # reading the .env file
+pandas                 # tables in the notebook

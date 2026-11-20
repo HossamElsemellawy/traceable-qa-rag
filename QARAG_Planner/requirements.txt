@@ -1,0 +1,10 @@
+# qplan requirements (Python 3.10).
+#
+# IMPORTANT - chromadb is NOT listed here on purpose:
+# it must be the SAME version as in the indexer (qarag), because Chroma's
+# on-disk format is tied to its version. Install it separately:
+#   F:\qarag\.venv\Scripts\pip show chromadb      -> read "Version: X.Y.Z"
+#   pip install chromadb==X.Y.Z                    (inside F:\qplan\.venv)
+litellm>=1.40
+openai>=1.30
+python-dotenv>=1.0

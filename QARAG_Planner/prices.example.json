@@ -1,0 +1,4 @@
+{
+  "_note": "OPTIONAL. Only used when OpenRouter does not report the cost of a call. Copy to prices.json and enter the prices in USD per 1 million tokens, as shown on https://openrouter.ai/models for each model. The 0.0 values below are placeholders, not real prices.",
+  "openrouter/qwen/qwen3-30b-a3b": {"input": 0.0, "output": 0.0}
+}
