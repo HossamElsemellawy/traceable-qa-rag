@@ -11,9 +11,9 @@ For each question it:
 
 | Version tag | Meaning |
 |---|---|
-| `eval-v5` | evaluation script version |
-| `extract-v5` | short-answer extraction prompt (paper Appendix A.6) |
-| `judge-v2` | judge prompt (paper Appendix A.7) |
+| `eval` | evaluation script version |
+| `extract` | short-answer extraction prompt (paper Appendix A.6) |
+| `judge` | judge prompt (paper Appendix A.7) |
 
 The tags are written into every summary file, so a result can always be traced to the prompts that produced it.
 
@@ -21,7 +21,7 @@ The tags are written into every summary file, so a result can always be traced t
 
 | Phase | What it does | Needs |
 |---|---|---|
-| 1. Answer | Retrieves QA pairs and writes an answer for every question, with the indexer's single-search `ask` logic (the paper's single-retrieval baseline) | the QA knowledge base and the full `qarag` indexer package (see the indexer program in this repository) |
+| 1. Answer | Retrieves QA pairs and writes an answer for every question, with the indexer's single-search `ask` logic (the paper's single-retrieval baseline) | the QA knowledge base and the full `qarag` package of the [indexer](../QARAG_Indexer/) |
 | 2. Score | Extraction, judge, EM/F1 and the other metrics | only this folder and an API key |
 
 `--rescore answers.csv` runs **only phase 2** on answers saved earlier, without new retrieval or new answers. Any system's answers can therefore be scored with exactly the same measurement, including the planner's answers.
@@ -33,7 +33,7 @@ The tags are written into every summary file, so a result can always be traced t
 Python 3.10 or later.
 
 ```bash
-cd answer-evaluation
+cd QARAG_Answer_Eval
 python -m venv .venv
 # Windows:  .venv\Scripts\activate
 # Linux/macOS:  source .venv/bin/activate
@@ -81,7 +81,7 @@ done
 
 On Windows `cmd`, run the six commands one by one with the model names above.
 
-The majority vote (an answer is correct when at least 3 of the 5 panel judges accept it), judge agreement, Fleiss' κ, self-preference and the five-planner ensemble are computed from these files by the analysis scripts (see the repository overview).
+The paper's panel verdict counts an answer as correct when at least 3 of the 5 panel judges accept it. It is taken over these per-judge files: each has one row per question, with the judge's verdict in `judge_correct` and its short answer in `short_answer`.
 
 ## Answering and scoring in one run (phase 1 + 2)
 
@@ -124,7 +124,7 @@ They are filled in and sent by `extract_short()` and `judge()` in the same file.
 
 The output CSV of any earlier run has these columns, so it can be re-scored directly.
 
-**Question subset for phase 1** (`hotpot_subset.jsonl`). One JSON object per line with `id`, `type`, `question`, `answer`, `titles` (the question's paragraph titles) and `supporting_facts_qarag` (gold supporting sentences mapped to the knowledge base's sentence numbers). This file is produced when the HotpotQA knowledge base is built (see the HotpotQA indexing program).
+**Question subset for phase 1** (`hotpot_subset.jsonl`). One JSON object per line with `id`, `type`, `question`, `answer`, `titles` (the question's paragraph titles) and `supporting_facts_qarag` (gold supporting sentences mapped to the knowledge base's sentence numbers). This file is written by `hotpot_index.py select` in the [indexer](../QARAG_Indexer/#building-the-hotpotqa-knowledge-bases-paper-experiments).
 
 ## Output files
 
@@ -176,7 +176,7 @@ All extraction and judge calls use temperature 0.
 ## Files
 
 ```
-answer-evaluation/
+QARAG_Answer_Eval/
 ├── hotpot_ask_eval.py      the evaluation script: prompts, extraction, judge, metrics, reports
 ├── qarag/
 │   ├── __init__.py
