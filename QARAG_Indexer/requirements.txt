@@ -11,3 +11,4 @@ pydantic>=2.5          # validating the generator's JSON output
 python-dotenv>=1.0     # reading the .env file
 typer>=0.12            # command-line interface
 datasets>=2.14         # hotpot_index.py: downloading HotpotQA from Hugging Face
+numpy>=1.24            # vector arithmetic in merging and storage
