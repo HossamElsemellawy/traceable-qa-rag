@@ -37,7 +37,7 @@ The prompt version (`qa-gen-v4`) is stored with every document, so the database 
 Python 3.10 or later.
 
 ```bash
-cd indexer
+cd QARAG_Indexer
 python -m venv .venv
 # Windows:  .venv\Scripts\activate
 # Linux/macOS:  source .venv/bin/activate
@@ -242,7 +242,7 @@ The Chroma collection `qa_pairs` holds one vector per pair, or two with `--varia
 
 ## Scoring answers
 
-The answer evaluation (short-answer extraction, LLM judge, EM/F1) is in [`../answer-evaluation`](../answer-evaluation/). Its single-search baseline run (`hotpot_ask_eval.py --db ...`) uses this package. To use it, copy `hotpot_ask_eval.py` into this folder and run it here.
+The answer evaluation (short-answer extraction, LLM judge, EM/F1) is in [`../QARAG_Answer_Eval`](../QARAG_Answer_Eval/). Its single-search baseline run (`hotpot_ask_eval.py --db ...`) uses this package. To use it, copy `hotpot_ask_eval.py` into this folder and run it here.
 
 ## Notes
 
