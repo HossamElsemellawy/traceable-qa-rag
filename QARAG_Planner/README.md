@@ -1,6 +1,6 @@
 # Planner: direct-first ReAct answering with citations and traces (`qplan`)
 
-This program implements the **online stage** of the paper (Section 3.2, prompts in Appendix A.4–A.5, trace database in Appendix C). It answers a question from a QA knowledge base built by the [indexer](../indexer/), which it opens **read-only**.
+This program implements the **online stage** of the paper (Section 3.2, prompts in Appendix A.4–A.5, trace database in Appendix C). It answers a question from a QA knowledge base built by the [indexer](../QARAG_Indexer/), which it opens **read-only**.
 
 ```
 question
@@ -54,12 +54,12 @@ One environment for the whole repository, from the repository root:
 python -m venv .venv
 # Windows:  .venv\Scripts\activate
 # Linux/macOS:  source .venv/bin/activate
-pip install -r indexer/requirements.txt -r planner/requirements.txt
+pip install -r QARAG_Indexer/requirements.txt -r QARAG_Planner/requirements.txt
 ```
 
-To use a separate environment for the planner, install `planner/requirements.txt`, then install the indexer's Chroma version. Check it in the indexer's environment with `pip show chromadb`, then run `pip install chromadb==<that version>`.
+To use a separate environment for the planner, install `QARAG_Planner/requirements.txt`, then install the indexer's Chroma version. Check it in the indexer's environment with `pip show chromadb`, then run `pip install chromadb==<that version>`.
 
-Copy `planner/.env.example` to `planner/.env` and put your key in it:
+Copy `QARAG_Planner/.env.example` to `QARAG_Planner/.env` and put your key in it:
 
 ```
 OPENROUTER_API_KEY=sk-or-...
@@ -72,11 +72,11 @@ The planner reads `.env` from its own folder, so you can run it from anywhere. A
 Build a small test knowledge base with the indexer's offline mode, then ask the planner with fake model calls:
 
 ```bash
-cd indexer
+cd QARAG_Indexer
 python -m qarag index https://en.wikipedia.org/wiki/Scott_Derrickson --dry-run --db data/test -m overwrite -y
-cd ../planner
-python -m qplan info --db ../indexer/data/test
-python -m qplan ask "When was Scott Derrickson born?" --db ../indexer/data/test --dry-run --memory off
+cd ../QARAG_Planner
+python -m qplan info --db ../QARAG_Indexer/data/test
+python -m qplan ask "When was Scott Derrickson born?" --db ../QARAG_Indexer/data/test --dry-run --memory off
 ```
 
 With `--dry-run`, every model call is fake (the answers read "(dry-run) ..."). On a real knowledge base, `--dry-run` still makes the cheap query-embedding call, because the query vector must come from the knowledge base's own embedding model.
@@ -84,9 +84,9 @@ With `--dry-run`, every model call is fake (the answers read "(dry-run) ..."). O
 ## Answering questions
 
 ```bash
-python -m qplan info --db ../indexer/data/hotpot_glm                     # check and summarise a knowledge base
-python -m qplan ask "Were Scott Derrickson and Ed Wood of the same nationality?" --db ../indexer/data/hotpot_glm
-python -m qplan batch questions.txt --db ../indexer/data/hotpot_glm -q   # one question per line, optional " || expected answer"
+python -m qplan info --db ../QARAG_Indexer/data/hotpot_glm                     # check and summarise a knowledge base
+python -m qplan ask "Were Scott Derrickson and Ed Wood of the same nationality?" --db ../QARAG_Indexer/data/hotpot_glm
+python -m qplan batch questions.txt --db ../QARAG_Indexer/data/hotpot_glm -q   # one question per line, optional " || expected answer"
 ```
 
 `ask` prints every step, the answer, the Sources list, the route (answered at step 0 or escalated) and the cost. With `--json`, it prints one JSON object instead; `hotpot_react_answers.py` uses this. `--only-titles T1 T2 ...` or `--only-titles-file` restricts every search to the named documents; this is the HotpotQA distractor setting.
@@ -138,7 +138,7 @@ Costs are the amounts OpenRouter reports. If a call reports none, the cost is es
 
 ## Running the HotpotQA experiments (paper)
 
-`hotpot_react_answers.py` runs the planner on every question of the HotpotQA subset. It writes the answers in the CSV format that [`answer-evaluation`](../answer-evaluation/) scores with `--rescore`. It calls `python -m qplan ask ... --json` once per question, with:
+`hotpot_react_answers.py` runs the planner on every question of the HotpotQA subset. It writes the answers in the CSV format that [`QARAG_Answer_Eval`](../QARAG_Answer_Eval/) scores with `--rescore`. It calls `python -m qplan ask ... --json` once per question, with:
 - the question's 10 paragraph titles in the distractor setting
 - no filter in the open-pool setting
 
@@ -146,12 +146,12 @@ It also converts the planner's conventions to the evaluation's:
 - `[E7]` becomes `[7]`
 - a *not found* status becomes the refusal sentence
 
-Run it from `answer-evaluation/`, so that `--score` finds `hotpot_ask_eval.py`. The paper's setting is the open pool (`--setting full`) with memory off:
+Run it from `QARAG_Answer_Eval/`, so that `--score` finds `hotpot_ask_eval.py`. The paper's setting is the open pool (`--setting full`) with memory off:
 
 ```bash
-cd answer-evaluation
-python ../planner/hotpot_react_answers.py --qplan ../planner \
-    --db ../indexer/data/hotpot_glm --subset ../indexer/hotpot_subset.jsonl \
+cd QARAG_Answer_Eval
+python ../QARAG_Planner/hotpot_react_answers.py --qplan ../QARAG_Planner \
+    --db ../QARAG_Indexer/data/hotpot_glm --subset ../QARAG_Indexer/hotpot_subset.jsonl \
     --setting full --memory off --direct-first on --direct-k 8 -k 8 --max-steps 6 --min-score 0.35 \
     --react-model openrouter/z-ai/glm-5.3-flash --synth-model openrouter/z-ai/glm-5.3-flash \
     --out answers_glm.csv
@@ -179,7 +179,7 @@ The output CSV is saved after every question. Besides the columns the evaluation
 | Gemini | `openrouter/google/gemini-3.8-flash` |
 | Claude Haiku | `openrouter/anthropic/claude-haiku-5.5` |
 
-Then score each answers file with the five-judge panel; see [answer-evaluation](../answer-evaluation/#reproducing-the-papers-five-judge-panel).
+Then score each answers file with the five-judge panel; see [QARAG_Answer_Eval](../QARAG_Answer_Eval/#reproducing-the-papers-five-judge-panel).
 
 ## Files
 
